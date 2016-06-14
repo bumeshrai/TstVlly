@@ -5,6 +5,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.LinearLayout;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -17,10 +18,13 @@ import java.util.Map;
 
 public class AssetMaintActivity extends AppCompatActivity {
 
+    public LinearLayout linearLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asset_maint);
+        linearLayout = (LinearLayout) findViewById(R.id.ll);
 
         Intent intent = getIntent();
         String auth_key = intent.getStringExtra("auth_key");
@@ -38,6 +42,7 @@ public class AssetMaintActivity extends AppCompatActivity {
                     FetchData fetchData = new FetchData();
                     Map<String, String> param = fetchData.getApiParam(jsonResponse);
                     Log.i("value", "Response: "+param);
+                    fetchData.createViews(param, linearLayout);
                     } catch (JSONException e) {
                     e.printStackTrace();
                 }

@@ -15,15 +15,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by cgmei on 14/6/16.
- */
+
 public class FetchData {
 
     private Map<String, String> params;
+    Context context = new AssetMaintActivity();
     LinearLayout linearLayout;
-    Context context;
-    String createdViews[][];
+    String createdViews[][] = new String [20][2];
     static List<CheckedTextView> checkedList = new ArrayList<CheckedTextView>();
     static List<EditText> editTextList = new ArrayList<EditText>();
 
@@ -64,22 +62,28 @@ public class FetchData {
     }
 
     //Function for Dynamic Creation of Views --> Checkboxes, EditTexts and Buttons
-    private void createViews(Map<String, String> params, String s) {
+    public void createViews(Map<String, String> params, LinearLayout linearLayout) {
+        this.linearLayout = linearLayout;
         int viewCount=0;
         Iterator entries = params.entrySet().iterator();
+
 
         while(entries.hasNext()){
             Map.Entry thisEntry = (Map.Entry) entries.next();
             //Create EditText whenever there's a "yes" and add it to the 2D array of created Views
             if (thisEntry.getValue().equals("1")) {
                 createdViews[viewCount][0] = thisEntry.getValue().toString();
+                Log.i("here", "createdViews: 1");
                 createdViews[viewCount++][1] ="Check";
+                Log.i("here", "createdViews2: "+thisEntry.getValue().toString() + " Context: "+context.toString());
                 new CreateLayout(context, linearLayout).createCheckedTextView(thisEntry.getKey().toString());
             }
             //Create EditText whenever there's a "yes" and add it to the 2D array of created Views
             else if (thisEntry.getValue().equals("yes")) {
+                Log.i("here", "here:3 ");
                 createdViews[viewCount][0] = thisEntry.getValue().toString();
                 createdViews[viewCount++][1] ="Edit";
+                Log.i("here", "createdViews2: "+thisEntry.getValue().toString() + " Context: "+context.toString());
                 new CreateLayout(context, linearLayout).createEditText();
             }
         }
@@ -89,6 +93,6 @@ public class FetchData {
             tunnelParameters.add(thisEntry.getValue().toString());
         }
 
-        new CreateLayout(context,linearLayout).createSubmitButton(s, createdViews, tunnelParameters);
+        new CreateLayout(context,linearLayout).createSubmitButton("", createdViews, tunnelParameters);
     }
 }

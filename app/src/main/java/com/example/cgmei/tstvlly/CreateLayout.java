@@ -1,5 +1,6 @@
 package com.example.cgmei.tstvlly;
 
+import android.util.Log;
 import android.widget.CheckedTextView;
 
 import android.app.AlertDialog;
@@ -54,6 +55,7 @@ public class CreateLayout{
 
     //Function to create CheckedTextView (Check box)
     void createCheckedTextView(String checkName){
+        Log.i("here", "createCheckedTextView: 1");
         checkedTextView = new CheckedTextView(context);
         FetchData.checkedList.add(checkedTextView);
         checkedTextView.setChecked(false);
@@ -89,11 +91,12 @@ public class CreateLayout{
         });
         checkedTextView.setLayoutParams(checkBoxParams);
         linearLayout.addView(checkedTextView);
-
+        Log.i("checked",checkedTextView.toString());
     }
 
     //Function to create EditText (Comment box)
     void createEditText() {
+        Log.i("here", "createEditText: 1");
         editText = new EditText(context);
         FetchData.editTextList.add(editText);
         editText.setLayoutParams(editParams);
