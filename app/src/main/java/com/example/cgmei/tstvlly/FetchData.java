@@ -22,12 +22,17 @@ public class FetchData {
     private Map<String, String> params;
     Context context;
     LinearLayout linearLayout;
-    String createdViews[][] = new String [20][2];
+    String createdViews[][];
     static List<CheckedTextView> checkedList = new ArrayList<CheckedTextView>();
     static List<EditText> editTextList = new ArrayList<EditText>();
 
     public FetchData(Context context){
         this.context = context;
+        this.createdViews= new String[20][2];
+        for(int i = 0; i< createdViews.length; i++){
+            createdViews[i][0] = "";
+            createdViews[i][1] = "";
+        }
     }
 
     public Map<String, String> getApiParam(JSONObject jsonResponse) {
@@ -57,7 +62,7 @@ public class FetchData {
                 label += Character.toUpperCase(str.charAt(0)) + str.substring(1) + " ";
 
             params.put(label, infoRead);
-            //Log.i("showArray","label: " + label + "  infoRead: " + infoRead);
+            //Log.i("value","label: " + label + "  infoRead: " + infoRead);
         }
         return params;
     }
@@ -75,7 +80,7 @@ public class FetchData {
             if (thisEntry.getValue().equals("1")) {
                 createdViews[viewCount][0] = thisEntry.getValue().toString();
                 createdViews[viewCount++][1] ="Check";
-                Log.i("value","Text: "+ thisEntry.getKey());
+                //Log.i("value","Text: "+ thisEntry.getKey());
                 new CreateLayout(context, linearLayout).createCheckedTextView(thisEntry.getKey().toString());
             }
             //Create EditText whenever there's a "yes" and add it to the 2D array of created Views

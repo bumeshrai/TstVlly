@@ -33,7 +33,7 @@ public class CreateLayout{
 
     //Constructor to initialize values
     public CreateLayout(Context context, LinearLayout linearLayout){
-        //Log.i("here", "CreateLayout: context: " + context);
+        //Log.i("value", "CreateLayout: context: " + context);
 
         this.context = context;
         this.linearLayout = linearLayout;
@@ -59,7 +59,7 @@ public class CreateLayout{
 
     //Function to create CheckedTextView (Check box)
     void createCheckedTextView(String checkName){
-        //Log.i("here", "createCheckedTextView: 12");
+        //Log.i("value", "createCheckedTextView: 12");
         FetchData.checkedList.add(checkedTextView);
         checkedTextView.setChecked(false);
         checkedTextView.setCheckMarkDrawable(android.R.drawable.checkbox_off_background);
@@ -98,7 +98,7 @@ public class CreateLayout{
 
     //Function to create EditText (Comment box)
     void createEditText() {
-        //Log.i("here", "createEditText: 1");
+        //Log.i("value", "createEditText: 1");
         FetchData.editTextList.add(editText);
         editText.setLayoutParams(editParams);
         editText.setTextColor(Color.BLACK);

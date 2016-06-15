@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Base64;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -97,15 +99,18 @@ public class SubmitData extends AsyncTask<String,String,String> {
             //Initialize all keys with a blank value
             for(int k=0; k<tunnelParameters.size();k++)
                 parent.put(tunnelParameters.get(i),"");
+            Log.i("value","Context: "+context.toString()+" LinearLayout: "+linearLayout.toString()
+                    +" CreatedViews: "+ Arrays.deepToString(createdViews));
 
             //Iterate through the created views which is a 2D array
             for(int len=0; len<createdViews.length; len++)
-                switch (createdViews[len][1]){
+               switch (createdViews[len][1]){
                     case "Check":
                         //For a checkbox write the parameter name and checked value to the JSONObject
                         //Call checked() function to see if checkbox is ticked or not
                         checked(i++);
                         parent.put(createdViews[len][0],checkValue);
+                        Log.i("value","i: "+i);
                         break;
                     case "Edit":
                         //For an EditText write the parameter name and Text value to the JSONObject
