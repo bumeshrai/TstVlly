@@ -13,16 +13,15 @@ import android.text.Spanned;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import java.util.List;
 
 public class CreateLayout{
-    CheckedTextView checkedTextView;
-    EditText editText;
-    LinearLayout linearLayout;
+    public CheckedTextView checkedTextView = null;
+    public EditText editText = null;
+    public LinearLayout linearLayout;
     Button b;
     String alertText[];
     int checkedId = 100;
@@ -33,8 +32,12 @@ public class CreateLayout{
 
     //Constructor to initialize values
     public CreateLayout(Context context, LinearLayout linearLayout){
+        //Log.i("here", "CreateLayout: context: " + context);
+
         this.context = context;
         this.linearLayout = linearLayout;
+        this.checkedTextView = new CheckedTextView(context);
+        this.editText = new EditText(context);
         alertText = new String[2];
 
         //Layout Parameters for different Views
@@ -55,12 +58,10 @@ public class CreateLayout{
 
     //Function to create CheckedTextView (Check box)
     void createCheckedTextView(String checkName){
-        Log.i("here", "createCheckedTextView: 1");
-        checkedTextView = new CheckedTextView(context);
+        //Log.i("here", "createCheckedTextView: 12");
         FetchData.checkedList.add(checkedTextView);
         checkedTextView.setChecked(false);
         checkedTextView.setCheckMarkDrawable(android.R.drawable.checkbox_off_background);
-
         checkedTextView.setBackgroundResource(R.drawable.rounded_lightblue);
         checkedTextView.setText(checkName);
         checkedTextView.setTextColor(Color.BLACK);
@@ -91,13 +92,12 @@ public class CreateLayout{
         });
         checkedTextView.setLayoutParams(checkBoxParams);
         linearLayout.addView(checkedTextView);
-        Log.i("checked",checkedTextView.toString());
+        //Log.i("checked",checkedTextView.toString());
     }
 
     //Function to create EditText (Comment box)
     void createEditText() {
-        Log.i("here", "createEditText: 1");
-        editText = new EditText(context);
+        //Log.i("here", "createEditText: 1");
         FetchData.editTextList.add(editText);
         editText.setLayoutParams(editParams);
         editText.setTextColor(Color.BLACK);

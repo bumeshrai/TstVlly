@@ -24,7 +24,7 @@ public class AssetMaintActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asset_maint);
-        linearLayout = (LinearLayout) findViewById(R.id.ll);
+        linearLayout = (LinearLayout) findViewById(R.id.maintList);
 
         Intent intent = getIntent();
         String auth_key = intent.getStringExtra("auth_key");
@@ -39,7 +39,7 @@ public class AssetMaintActivity extends AppCompatActivity {
                     Log.i("value", "Response: "+jsonResponse.toString());
                     jsonResponse = jsonResponse.getJSONObject("data");
 
-                    FetchData fetchData = new FetchData();
+                    FetchData fetchData = new FetchData(AssetMaintActivity.this);
                     Map<String, String> param = fetchData.getApiParam(jsonResponse);
                     Log.i("value", "Response: "+param);
                     fetchData.createViews(param, linearLayout);

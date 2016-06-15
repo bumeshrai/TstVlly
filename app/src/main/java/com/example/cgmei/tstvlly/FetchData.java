@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -19,14 +20,14 @@ import java.util.Map;
 public class FetchData {
 
     private Map<String, String> params;
-    Context context = new AssetMaintActivity();
+    Context context;
     LinearLayout linearLayout;
     String createdViews[][] = new String [20][2];
     static List<CheckedTextView> checkedList = new ArrayList<CheckedTextView>();
     static List<EditText> editTextList = new ArrayList<EditText>();
 
-    public FetchData(){
-
+    public FetchData(Context context){
+        this.context = context;
     }
 
     public Map<String, String> getApiParam(JSONObject jsonResponse) {
@@ -53,10 +54,10 @@ public class FetchData {
             String[] tokens = label.split(" ");
             label = "";
             for(String str: tokens)
-                label += Character.toUpperCase(str.charAt(0)) + str.substring(1);
+                label += Character.toUpperCase(str.charAt(0)) + str.substring(1) + " ";
 
-            params.put('"'+label+'"', infoRead);
-            Log.i("showArray","label: " + label + "  infoRead: " + infoRead);
+            params.put(label, infoRead);
+            //Log.i("showArray","label: " + label + "  infoRead: " + infoRead);
         }
         return params;
     }
@@ -73,17 +74,14 @@ public class FetchData {
             //Create EditText whenever there's a "yes" and add it to the 2D array of created Views
             if (thisEntry.getValue().equals("1")) {
                 createdViews[viewCount][0] = thisEntry.getValue().toString();
-                Log.i("here", "createdViews: 1");
                 createdViews[viewCount++][1] ="Check";
-                Log.i("here", "createdViews2: "+thisEntry.getValue().toString() + " Context: "+context.toString());
+                Log.i("value","Text: "+ thisEntry.getKey());
                 new CreateLayout(context, linearLayout).createCheckedTextView(thisEntry.getKey().toString());
             }
             //Create EditText whenever there's a "yes" and add it to the 2D array of created Views
             else if (thisEntry.getValue().equals("yes")) {
-                Log.i("here", "here:3 ");
                 createdViews[viewCount][0] = thisEntry.getValue().toString();
                 createdViews[viewCount++][1] ="Edit";
-                Log.i("here", "createdViews2: "+thisEntry.getValue().toString() + " Context: "+context.toString());
                 new CreateLayout(context, linearLayout).createEditText();
             }
         }
@@ -92,7 +90,6 @@ public class FetchData {
             Map.Entry thisEntry = (Map.Entry) entries.next();
             tunnelParameters.add(thisEntry.getValue().toString());
         }
-
         new CreateLayout(context,linearLayout).createSubmitButton("", createdViews, tunnelParameters);
     }
 }
