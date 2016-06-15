@@ -86,10 +86,13 @@ public class FetchData {
             }
         }
         List<String> tunnelParameters = new ArrayList<String>();
+        entries = params.entrySet().iterator();
+
         while (entries.hasNext()) {
             Map.Entry thisEntry = (Map.Entry) entries.next();
-            tunnelParameters.add(thisEntry.getValue().toString());
+            tunnelParameters.add(thisEntry.getKey().toString());
         }
+
         new CreateLayout(context,linearLayout).createSubmitButton("", createdViews, tunnelParameters);
     }
 }

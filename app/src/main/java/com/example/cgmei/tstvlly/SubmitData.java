@@ -99,17 +99,17 @@ public class SubmitData extends AsyncTask<String,String,String> {
                 parent.put(tunnelParameters.get(i),"");
 
             //Iterate through the created views which is a 2D array
-            for(int l=0; l<createdViews.length; l++)
-                switch (createdViews[l][1]){
+            for(int len=0; len<createdViews.length; len++)
+                switch (createdViews[len][1]){
                     case "Check":
                         //For a checkbox write the parameter name and checked value to the JSONObject
                         //Call checked() function to see if checkbox is ticked or not
                         checked(i++);
-                        parent.put(createdViews[l][0],checkValue);
+                        parent.put(createdViews[len][0],checkValue);
                         break;
                     case "Edit":
                         //For an EditText write the parameter name and Text value to the JSONObject
-                        parent.put(createdViews[l][0], FetchData.editTextList.get(j++).getText().toString());
+                        parent.put(createdViews[len][0], FetchData.editTextList.get(j++).getText().toString());
                         break;
                 }
             //Get Date of the phone and write to JSONObject

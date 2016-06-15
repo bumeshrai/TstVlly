@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class CreateLayout{
@@ -117,6 +118,8 @@ public class CreateLayout{
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*Log.i("here","Context: "+context.toString()+" LinearLayout: "+linearLayout.toString()
+                        +" CreatedViews: "+ Arrays.deepToString(createdViews)+" tunnelParameters "+tunnelParameters.toString());*/
                 alertText = new SubmitData(context, linearLayout).createJSONString(createdViews, tunnelParameters);
                 show_alert(URLParams);
             }
