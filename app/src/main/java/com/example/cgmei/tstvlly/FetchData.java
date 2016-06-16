@@ -1,7 +1,6 @@
 package com.example.cgmei.tstvlly;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -10,7 +9,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -42,7 +40,6 @@ public class FetchData {
         String parameter = "";
         String infoRead ="";
 
-
         //Iterate through the keys
         while(keys.hasNext()){
             //Add key's name to List of Parameters
@@ -68,11 +65,10 @@ public class FetchData {
     }
 
     //Function for Dynamic Creation of Views --> Checkboxes, EditTexts and Buttons
-    public void createViews(Map<String, String> params, LinearLayout linearLayout) {
+    public String[][] createViews(Map<String, String> params, LinearLayout linearLayout) {
         this.linearLayout = linearLayout;
         int viewCount=0;
         Iterator entries = params.entrySet().iterator();
-
 
         while(entries.hasNext()){
             Map.Entry thisEntry = (Map.Entry) entries.next();
@@ -90,14 +86,7 @@ public class FetchData {
                 new CreateLayout(context, linearLayout).createEditText();
             }
         }
-        List<String> tunnelParameters = new ArrayList<String>();
-        entries = params.entrySet().iterator();
 
-        while (entries.hasNext()) {
-            Map.Entry thisEntry = (Map.Entry) entries.next();
-            tunnelParameters.add(thisEntry.getKey().toString());
-        }
-
-        new CreateLayout(context,linearLayout).createSubmitButton("", createdViews, tunnelParameters);
+        return createdViews;
     }
 }

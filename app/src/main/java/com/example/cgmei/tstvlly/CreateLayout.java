@@ -1,5 +1,6 @@
 package com.example.cgmei.tstvlly;
 
+import android.content.Intent;
 import android.util.Log;
 import android.widget.CheckedTextView;
 
@@ -16,6 +17,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,10 +27,13 @@ public class CreateLayout{
     public CheckedTextView checkedTextView = null;
     public EditText editText = null;
     public LinearLayout linearLayout;
-    Button b;
+    Button button;
     String alertText[];
     int checkedId = 100;
     String url = "http://52.90.177.177/assetMaint/api/web/tunnel-ventilation-";
+    boolean proceed = false;
+    JSONObject parent;
+    int checkValue;
 
     Context context;
     LinearLayout.LayoutParams textParams, editParams,checkBoxParams,buttonParams;
@@ -111,29 +118,31 @@ public class CreateLayout{
     }
 
     //Function to create Submit button
-    public void createSubmitButton(final String URLParams, final String[][] createdViews,final List<String> tunnelParameters) {
-        b = new Button(context);
-        b.setText("SUBMIT");
+    public void createSubmitButton(final String[][] createdViews) {
+        button = new Button(context);
+        button.setText("SUBMIT");
         //Create JSON String onclick of submit button and Show Alert window
-        b.setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /*Log.i("here","Context: "+context.toString()+" LinearLayout: "+linearLayout.toString()
                         +" CreatedViews: "+ Arrays.deepToString(createdViews)+" tunnelParameters "+tunnelParameters.toString());*/
-                alertText = new SubmitData(context, linearLayout).createJSONString(createdViews, tunnelParameters);
-                show_alert(URLParams);
+                alertText = createJSONString(createdViews);
+                //Log.i("value", "URLParams: "+ URLParams);
+                //Log.i("value", "alertText: "+ Arrays.toString(alertText));
+                show_alert();
+
             }
         });
-        b.setBackgroundResource(R.drawable.rounded_button);
-        b.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-        b.setTextColor(Color.WHITE);
-        b.setLayoutParams(buttonParams);
-        linearLayout.addView(b);
+        button.setBackgroundResource(R.drawable.rounded_button);
+        button.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        button.setTextColor(Color.WHITE);
+        button.setLayoutParams(buttonParams);
+        linearLayout.addView(button);
     }
 
-
     //Function to show alert before submitting the form
-    private void show_alert(final String URLParams) {
+    private void show_alert() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         Spanned message = Html.fromHtml("<b>" + "List of Items checked: " + "</b><br>" + alertText[0] + "<br><br><b>" + "List of Items not checked: " + "</b><br>" + alertText[1]);
         builder.setTitle("Do you want to proceed?")
@@ -149,11 +158,80 @@ public class CreateLayout{
                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         //Submit to server onclick of YES
-                        new SubmitData(context, linearLayout).execute(url + URLParams);
+                        Intent createIntent = new Intent(context, CreateActivity.class);
+                        createIntent.putExtra("parent", parent.toString());
+                        context.startActivity(createIntent);
                     }
                 });
         AlertDialog alert = builder.create();
         alert.show();
+    }
 
+    //Function that returns a String for display in the alert window
+    public String[] createJSONString(String[][] createdViews) {
+        int i= 0, j = 0;
+        try {
+            //JSONObject to be submitted
+            parent = new JSONObject();
+            parent.put("freq_id",0);
+
+            //Initialize all keys with a blank value
+            for(int k=0; k < FetchData.checkedList.size(); k++){
+                if(FetchData.checkedList.get(k).isChecked())
+                    parent.put(FetchData.checkedList.get(k).getText().toString(),1);
+                else
+                    parent.put(FetchData.checkedList.get(k).getText().toString(),0);
+            }
+            /*Log.i("value","Context: "+context.toString()+" LinearLayout: "+linearLayout.toString()
+                    +" CreatedViews: "+ Arrays.deepToString(createdViews));*/
+            //Log.i("value","Parent: "+parent);
+
+
+            //Iterate through the created views which is a 2D array
+            for(int len=0; len<createdViews.length; len++)
+                switch (createdViews[len][1]){
+                    case "Check":
+                        //For a checkbox write the parameter name and checked value to the JSONObject
+                        //Call checked() function to see if checkbox is ticked or not
+                        checked(len);
+                        parent.put(createdViews[len][0],checkValue);
+                        break;
+                    case "Edit":
+                        //For an EditText write the parameter name and Text value to the JSONObject
+                        parent.put(createdViews[len][0], FetchData.editTextList.get(j++).getText().toString());
+                        break;
+                }
+
+
+            //Set List of checked Items to NONE if none have been checked
+            if(alertText[0].equals(""))
+                alertText[0]= "(None)";
+            //Set List of unchecked Items to NONE if none are unchecked
+            if(alertText[1].equals(""))
+                alertText[1]= "(None)";
+
+            //Log.i("value","Parent: "+parent);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return alertText;
+    }
+
+    //Function to check if a checkbox has been ticked or not
+    private void checked(int i) {
+        //alertText[0] stores checked Items; alertText[1] stores unchecked Items
+        if(FetchData.checkedList.get(i).isChecked()){
+            checkValue = 1;
+            alertText[0] += FetchData.checkedList.get(i).getText().toString() + "<br>";
+        }
+        else{
+            checkValue = 0;
+            alertText[1] += FetchData.checkedList.get(i).getText().toString() + "<br>";
+        }
+    }
+
+    public JSONObject getParent(){
+        return parent;
     }
 }

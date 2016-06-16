@@ -17,7 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AssetMaintActivity"></activity>
+        <activity android:name=".AssetMaintActivity" />
+        <activity android:name=".CreateActivity"></activity>
     </application>
 
 </manifest>
