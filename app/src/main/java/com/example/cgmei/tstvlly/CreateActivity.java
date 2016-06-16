@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
@@ -32,11 +33,10 @@ public class CreateActivity extends AppCompatActivity {
         }
         Log.i("value","At Create, Parent: "+parent);
 
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
+        Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(String response) {
+            public void onResponse(JSONObject jsonResponse) {
                 try {
-                    JSONObject jsonResponse = new JSONObject(response);
                     jsonResponse = jsonResponse.getJSONObject("data");
                     Log.i("value", "Response: "+jsonResponse.toString());
                 } catch (JSONException e) {
