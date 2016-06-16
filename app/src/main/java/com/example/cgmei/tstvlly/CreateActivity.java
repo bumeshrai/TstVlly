@@ -17,22 +17,26 @@ import java.util.Map;
 
 public class CreateActivity extends AppCompatActivity {
 
+    public JSONObject parent = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
 
-        JSONObject parent = null;;
-
         Intent intent = getIntent();
         String parentString = intent.getStringExtra("parent");
+
         try {
-            parent = new JSONObject(parentString);
+            this.parent = new JSONObject(parentString);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         Log.i("value","At Create, Parent: "+parent);
+        getResponse();
+    }
 
+    private void getResponse(){
         Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonResponse) {
@@ -49,5 +53,6 @@ public class CreateActivity extends AppCompatActivity {
         WorksheetRequest worksheetRequest = new WorksheetRequest(parent, responseListener);
         RequestQueue queue = Volley.newRequestQueue(CreateActivity.this);
         queue.add(worksheetRequest);
+        Log.i("here","Method Called");
     }
 }
