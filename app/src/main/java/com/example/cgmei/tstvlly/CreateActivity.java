@@ -33,7 +33,8 @@ public class CreateActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         Log.i("value","At Create, Parent: "+parent);
-        getResponse();
+        //getResponse();
+        getResponseStr();
     }
 
     private void getResponse(){
@@ -55,4 +56,27 @@ public class CreateActivity extends AppCompatActivity {
         queue.add(worksheetRequest);
         Log.i("here","Method Called");
     }
+
+    private void getResponseStr(){
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    //Log.i("value", "Response: "+jsonResponse.toString());
+                    jsonResponse = jsonResponse.getJSONObject("data");
+                    Log.i("value", "Response: "+jsonResponse.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        // Volley Request
+        TestClass worksheetRequest = new TestClass(parent.toString(), responseListener);
+        RequestQueue queue = Volley.newRequestQueue(CreateActivity.this);
+        queue.add(worksheetRequest);
+        Log.i("here","String Method Called");
+    }
+
 }
